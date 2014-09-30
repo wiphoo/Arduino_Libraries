@@ -133,17 +133,17 @@ class SerialCommunicator
 		{ this->defaultCallbackFunc = callbackFunc; }
 			
 		//	Clear serial communication buffer
-		void clearSerialSerialCommunicationBuffer()
+		void clearSerialSerialCommunicatorBuffer()
 		{ this->currentSerialBufferPosition = 0; }
 		
 		//	Read serial communication and check end of serial command
 		//		if it received complete command then call a callback for given command.
 		//		After processed callback function, sent completed processed command acknowledge.
-		void readSerailCommunication();
+		void readSerialCommunicator();
 		
 		//	Sent a acknowledge string
 		//		FORMAT - acknowledge + delimiter char + result str + terminated command char
-		void sendSerialAcknowledge( const char *acknowledgeStr, 
+		void sendSerialCommunicatorAcknowledge( const char *acknowledgeStr, 
 										const char *resultStr, 
 										const char delimiter = DEFAULT_DELIMITER_CHAR )
 		{
