@@ -107,7 +107,7 @@ bool SerialCommunicator::addCommandCallbackFunction( const char *command, void (
 //	Read serial communication and check end of serial command
 //		if it received complete command then call a callback for given command.
 //		After processed callback function, sent back a completed processed command
-void SerialCommunicator::readSerailCommunication()
+void SerialCommunicator::readSerialCommunicator()
 {
 	//	Initialize a serial char buffer
 	char buffer;
@@ -146,7 +146,7 @@ void SerialCommunicator::readSerailCommunication()
 						( currentCommandCallback.callbackFunc )();
 						
 						//	Clear serial buffer
-						this->clearSerialSerialCommunicationBuffer();
+						this->clearSerialSerialCommunicatorBuffer();
 						
 						//	Send acknowledge to a caller
 					}
