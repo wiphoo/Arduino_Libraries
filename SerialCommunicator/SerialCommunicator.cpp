@@ -31,6 +31,9 @@
 //	Default terminated serial command character
 #define DEFAULT_TERMINATED_SERIAL_COMMAND_CHAR '\r'
 
+//	Default done acknowledge result string
+#define DEFAULT_DONE_ACKNOWLEDGE_RESULT_STR "DONE"
+
 //
 //	DEBUG
 //
@@ -69,10 +72,14 @@ SerialCommunicator::SerialCommunicator( SERIAL &serial )
 												terminatedCommandChar( DEFAULT_TERMINATED_SERIAL_COMMAND_CHAR ), 
 												delimieterChar( DEFAULT_DELIMITER_CHAR ),
 												numCommandCallbacks( 0 )
+												
 {
 #ifdef DO_DEBUG_READ_SERIAL
 	//Serial.begin( 9600 );
 #endif
+
+	//	Initialize done acknowledge result
+	strcpy( this->doneAcknowledgeResultStr, DEFAULT_DONE_ACKNOWLEDGE_RESULT_STR );
 }
 SerialCommunicator::~SerialCommunicator()
 {
@@ -170,7 +177,9 @@ void SerialCommunicator::readSerialCommunicator()
 						//	Clear serial buffer
 						this->clearSerialSerialCommunicatorBuffer();
 						
-						//	Send acknowledge to a caller
+						//	Send acknowledge to a sender command string
+						this->sendSerialCommunicatorAcknowledge( this->serialBuffer,
+																	this->doneAcknowledgeResultStr );
 					}
 				}
 			}
