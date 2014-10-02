@@ -15,7 +15,13 @@
 //
 //-----------------------------------------------------------------------
 
-#include <SoftwareSerial.h>
+#if defined(ARDUINO) && ARDUINO >= 100
+#	include "Arduino.h"
+#else
+#	include "WProgram.h"
+#endif
+
+#include <AltSoftSerial.h>
 
 //-----------------------------------------------------------------------
 //
@@ -29,8 +35,10 @@
 //
 //-----------------------------------------------------------------------
 
+#define SERIAL AltSoftSerial
+
 //	Maximum buffer size
-#define MAX_SERIAL_BUFFER_SIZE 100
+#define MAX_SERIAL_BUFFER_SIZE 50
 
 //	Maximum serial command callback function
 #define MAX_SERIAL_COMMAND_CALLBACK_FUNCTION 20
@@ -81,10 +89,10 @@ class SerialCommunicator
 	protected:
 		
 		//	Arduino software serial
-		SoftwareSerial *serial;
+		SERIAL *serial;
 		
 		//	Serial buffer
-		char *serialBuffer[MAX_SERIAL_BUFFER_SIZE];
+		char serialBuffer[MAX_SERIAL_BUFFER_SIZE];
 		
 		//	Current position in serial buffer
 		unsigned int currentSerialBufferPosition;
@@ -114,7 +122,7 @@ class SerialCommunicator
 	//-----------------------------------------------------------------------
 	public:
 	
-	SerialCommunicator( SoftwareSerial &serial );
+	SerialCommunicator( SERIAL &serial );
 	
 	~SerialCommunicator();
 	
