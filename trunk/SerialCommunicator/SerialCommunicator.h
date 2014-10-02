@@ -46,6 +46,9 @@
 //	Default delimiter in serial communication
 #define DEFAULT_DELIMITER_CHAR ':'
 
+//	Maximum result acknowledge string
+#define MAX_RESULT_ACKNOWLEDGE_STR 20
+
 //-----------------------------------------------------------------------
 //
 //	Inline Functions
@@ -112,6 +115,9 @@ class SerialCommunicator
 		//	Default callback function when command doesn't match in commandCallbackArray
 		void (*defaultCallbackFunc)();
 		
+		//	Done result string
+		char doneAcknowledgeResultStr[MAX_RESULT_ACKNOWLEDGE_STR];
+		
 	//-----------------------------------------------------------------------
 	//	Private Members Class
 	//-----------------------------------------------------------------------
@@ -151,14 +157,14 @@ class SerialCommunicator
 		
 		//	Sent a acknowledge string
 		//		FORMAT - acknowledge + delimiter char + result str + terminated command char
-		void sendSerialCommunicatorAcknowledge( const char *acknowledgeStr, 
-										const char *resultStr, 
-										const char delimiter = DEFAULT_DELIMITER_CHAR )
+		void sendSerialCommunicatorAcknowledge( const char *commandAcknowledgeStr, 
+													const char *resultAcknowledgeStr, 
+													const char delimiter = DEFAULT_DELIMITER_CHAR )
 		{
 			//	Write serial acknowledge
-			this->serial->print( acknowledgeStr );
+			this->serial->print( commandAcknowledgeStr );
 			this->serial->print( delimiter );
-			this->serial->print( resultStr );
+			this->serial->print( resultAcknowledgeStr );
 			this->serial->println( this->terminatedCommandChar );
 		}
 		
