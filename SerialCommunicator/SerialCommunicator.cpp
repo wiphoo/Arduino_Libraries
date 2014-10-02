@@ -31,6 +31,12 @@
 //	Default terminated serial command character
 #define DEFAULT_TERMINATED_SERIAL_COMMAND_CHAR '\r'
 
+//
+//	DEBUG
+//
+
+#define DO_DEBUG_READ_SERIAL
+
 //-----------------------------------------------------------------------
 //
 //	Inline Functions
@@ -57,14 +63,16 @@
 //
 //-----------------------------------------------------------------------
 
-SerialCommunicator::SerialCommunicator( SoftwareSerial &serial ) 
+SerialCommunicator::SerialCommunicator( SERIAL &serial ) 
 										: serial( &serial ),
 											currentSerialBufferPosition( 0 ),
 												terminatedCommandChar( DEFAULT_TERMINATED_SERIAL_COMMAND_CHAR ), 
 												delimieterChar( DEFAULT_DELIMITER_CHAR ),
 												numCommandCallbacks( 0 )
 {
-
+#ifdef DO_DEBUG_READ_SERIAL
+	//Serial.begin( 9600 );
+#endif
 }
 SerialCommunicator::~SerialCommunicator()
 {
@@ -109,22 +117,36 @@ bool SerialCommunicator::addCommandCallbackFunction( const char *command, void (
 //		After processed callback function, sent back a completed processed command
 void SerialCommunicator::readSerialCommunicator()
 {
+#ifdef DO_DEBUG_READ_SERIAL
+	//Serial.println( "SerialCommunicator::readSerialCommunicator()" );
+#endif
+
 	//	Initialize a serial char buffer
 	char buffer;
 	
 	//	loop
-	while( this->serial->available() )
+	while( this->serial->available() > 0 )
 	{
 		//	Read char from serial
 		buffer = this->serial->read();
 		
+#ifdef DO_DEBUG_READ_SERIAL
+		Serial.print( buffer );
+#endif
+		
 		//	Check for end of command
 		if( buffer == this->terminatedCommandChar )
 		//	This is a end of string
-		{
+		{		
 			//	Store end of string in command array
 			this->serialBuffer[this->currentSerialBufferPosition++] = '\0';
-			
+
+#ifdef DO_DEBUG_READ_SERIAL
+			Serial.println( "" );
+			Serial.print( "Current command = " );
+			Serial.println( this->serialBuffer );
+#endif
+	
 			//	Reset current serial buffer position
 			this->currentSerialBufferPosition = 0;
 			
@@ -139,7 +161,7 @@ void SerialCommunicator::readSerialCommunicator()
 					//	Get command callback at current index
 					CommandCallback currentCommandCallback = this->commandCallbackArray[i];
 					//	Compare command string
-					if( strcmp( *this->serialBuffer, currentCommandCallback.command ) == 0 )
+					if( strcmp( this->serialBuffer, currentCommandCallback.command ) == 0 )
 					//	Matched command
 					{
 						//	Call a callback function
@@ -159,7 +181,7 @@ void SerialCommunicator::readSerialCommunicator()
 			//	New character is printable, so add it into serial buffer
 			{
 				//	Store in serial buffer array
-				( *this->serialBuffer[this->currentSerialBufferPosition++] ) = buffer;
+				( this->serialBuffer[this->currentSerialBufferPosition++] ) = buffer;
 				//	Check serial buffer doesn't full yet?
 				if( this->currentSerialBufferPosition > MAX_SERIAL_BUFFER_SIZE )
 				//	Buffer is full, so warp around
