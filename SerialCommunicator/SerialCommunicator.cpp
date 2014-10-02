@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------
 //
 //   KdsLockEngine is written by Wiphoo (Terng) Methachawalit
-//       for DSP :: KDS Lock - created on 2014/09/09
+//       for Wiphoo Methachawalit - created on 2014/09/09
 //   Copyright Wiphoo Methachawalit, 2014. All rights reserved.
 //
 //-----------------------------------------------------------------------
