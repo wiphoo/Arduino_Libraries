@@ -53,6 +53,9 @@
 //
 //-----------------------------------------------------------------------
 
+//#ifdef DO_DEBUG_READ_SERIAL
+//HardwareSerial *DEBUB_SERIAL = &Serial;
+//#endif
 
 //-----------------------------------------------------------------------
 //
@@ -66,7 +69,7 @@
 //
 //-----------------------------------------------------------------------
 
-SerialCommunicator::SerialCommunicator( SERIAL &serial ) 
+SerialCommunicator::SerialCommunicator( SERIAL_COMMUNICATOR &serial ) 
 										: serial( &serial ),
 											currentSerialBufferPosition( 0 ),
 												terminatedCommandChar( DEFAULT_TERMINATED_SERIAL_COMMAND_CHAR ), 

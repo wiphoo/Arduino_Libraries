@@ -35,7 +35,13 @@
 //
 //-----------------------------------------------------------------------
 
-#define SERIAL AltSoftSerial
+//#define USING_SOFTWARE_SERIAL
+
+#ifdef USING_SOFTWARE_SERIAL
+#	define SERIAL_COMMUNICATOR AltSoftSerial
+#else
+#	define SERIAL_COMMUNICATOR HardwareSerial
+#endif
 
 //	Maximum buffer size
 #define MAX_SERIAL_BUFFER_SIZE 50
@@ -92,7 +98,7 @@ class SerialCommunicator
 	protected:
 		
 		//	Arduino software serial
-		SERIAL *serial;
+		SERIAL_COMMUNICATOR *serial;
 		
 		//	Serial buffer
 		char serialBuffer[MAX_SERIAL_BUFFER_SIZE];
@@ -128,7 +134,7 @@ class SerialCommunicator
 	//-----------------------------------------------------------------------
 	public:
 	
-	SerialCommunicator( SERIAL &serial );
+	SerialCommunicator( SERIAL_COMMUNICATOR &serial );
 	
 	~SerialCommunicator();
 	
